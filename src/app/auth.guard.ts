@@ -23,10 +23,10 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     // console.log('canActivate')
     // this.router.navigate(['configuration'])
 
-    // const storedToken = this.tokenService.getToken();
-    // if (storedToken.length == 0) {
-    //   this.router.navigate(['token']);
-    // }
+    const storedToken = localStorage.getItem('token');
+    if (storedToken == null || storedToken.length == 0) {
+      this.router.navigate(['login-page']);
+    }
 
     // localStorage.setItem('item1', 'value1'); //  localStorage se pamti na nivou brauzera
     // console.log(localStorage.getItem('item1'));
@@ -42,5 +42,4 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return true;
   }
-
 }

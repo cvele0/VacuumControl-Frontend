@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,13 +11,15 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     this.authService.login({ email: this.email, password: this.password })
       .subscribe(
         response => {
-          // Handle successful login (e.g., store token in local storage, redirect, etc.)
+          localStorage.setItem('token', response.token);
+          this.authService.setLogin();
+          this.router.navigate(['/user-list']);
         },
         error => {
           alert('Login failed. Please check your credentials.'); 
