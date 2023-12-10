@@ -26,6 +26,7 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     const storedToken = localStorage.getItem('token');
     if (storedToken == null || storedToken.length == 0) {
       this.router.navigate(['login-page']);
+      return false;
     }
 
     // localStorage.setItem('item1', 'value1'); //  localStorage se pamti na nivou brauzera
