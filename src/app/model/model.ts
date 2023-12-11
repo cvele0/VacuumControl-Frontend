@@ -1,4 +1,5 @@
 export class User {
+  userId: number;
   name: string;
   surname: string;
   hashedPassword: string;
@@ -6,12 +7,14 @@ export class User {
   permissions: number;
 
   constructor(
+    userId: number,
     name: string,
     surname: string,
     hashedPassword: string,
     email: string,
     permissions: number
   ) {
+    this.userId = userId;
     this.name = name;
     this.surname = surname;
     this.hashedPassword = hashedPassword;

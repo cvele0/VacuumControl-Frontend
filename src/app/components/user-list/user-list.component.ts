@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserPermission } from 'src/app/model/model';
+import { catchError, throwError } from 'rxjs';
+import { User, UserPermission } from 'src/app/model/model';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users: any[] = [];
+  users: User[] = [];
 
   constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
 
@@ -19,23 +20,33 @@ export class UserListComponent implements OnInit {
   }
 
   loadUsers(): void {
-    try {
-      this.userService.getUsers().subscribe(
+    this.userService.getUsers()
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching users:', error);
+          return throwError('There was an error fetching users');
+        })
+      )
+      .subscribe(
         (data) => {
           if (this.userService.userHasPermissionToReadUsers()) {
             this.users = data;
           } else {
             console.log('User does not have permission to view users');
-            // alert('User does not have permission to view users');
+            throw new Error('Forbidden'); 
           }
         },
         (error) => {
-          console.error('Error fetching users:', error);
+          if (error.message === 'Forbidden') {
+            // Handle the 403 error here
+            console.error('User does not have permission to view users');
+            // Return or handle the 403 error accordingly
+          } else {
+            console.error('Error fetching users:', error);
+            // Handle other errors as needed
+          }
         }
       );
-    } catch (error: any) {
-      console.error(error.message);
-    }
   }
 
   editUser(userId: number): void {
@@ -56,7 +67,6 @@ export class UserListComponent implements OnInit {
     if (permissions & UserPermission.CAN_DELETE_USERS) {
       permissionTitles.push('DELETE');
     }
-    // Add other permissions based on bitwise operations (e.g., permissions & 4, permissions & 8, etc.)
     return permissionTitles;
   }
 }

@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users" (click)="editUser(user.id)">
+      <tr *ngFor="let user of users" (click)="editUser(user.userId)">
         <td>{{ user.name }}</td>
         <td>{{ user.surname }}</td>
         <td>{{ user.email }}</td>
@@ -20,8 +20,7 @@
             <span [class.lastItem]="last">{{ permission }}{{ !last ? ', ' : '' }}</span>
           </span>
         </td>
-        <td><button class="btn btn-primary">Edit</button></td>
-      </tr>
+        <td><button class="btn btn-primary" (click)="editUser(user.userId)">Edit</button></td>      </tr>
     </tbody>
   </table>
 </div>

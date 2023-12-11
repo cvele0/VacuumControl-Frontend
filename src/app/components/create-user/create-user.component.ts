@@ -37,12 +37,13 @@ export class CreateUserComponent implements OnInit {
     if (this.newUser.canDelete) {
       permissions |= UserPermission.CAN_DELETE_USERS;
     }
-    const u = new User(this.newUser.name, this.newUser.surname, this.newUser.password, this.newUser.email, permissions);
+    const u = new User(0, this.newUser.name, this.newUser.surname, this.newUser.password, this.newUser.email, permissions);
     this.userService.createUser(u)
       .subscribe(
         (response) => {
           // Handle successful creation
           console.log('User created:', response);
+          this.router.navigate(["user-list"]);
         },
         (error) => {
           // Handle errors

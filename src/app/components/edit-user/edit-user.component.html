@@ -1,1 +1,43 @@
-<p>edit-user works!</p>
+<div class="container mt-5">
+  <h2>Edit User</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" required>
+    </div>
+    <div class="mb-3">
+      <label for="surname" class="form-label">Surname</label>
+      <input type="text" id="surname" name="surname" class="form-control" required [(ngModel)]="user.surname">
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" name="email" class="form-control" required [(ngModel)]="user.email">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password" required [(ngModel)]="user.password">
+    </div>
+
+    <div class="mb-3">
+      <label>Permissions</label>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canCreate" name="canCreate" [(ngModel)]="user.canCreate">
+        <label class="form-check-label" for="canCreate">Create</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canRead" name="canRead" [(ngModel)]="user.canRead">
+        <label class="form-check-label" for="canRead">Read</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canUpdate" name="canUpdate" [(ngModel)]="user.canUpdate">
+        <label class="form-check-label" for="canUpdate">Update</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canDelete" name="canDelete" [(ngModel)]="user.canDelete">
+        <label class="form-check-label" for="canDelete">Delete</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update User</button>
+  </form>
+</div>

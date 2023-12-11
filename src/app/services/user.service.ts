@@ -46,9 +46,27 @@ export class UserService {
     }
   }
 
-  // updateUser(updatedUser: User): Observable<User> {
-  //   return this.http.put<User>(`${this.apiUrl}/users/${updatedUser.id}`, updatedUser);
-  // }
+  getUserById(userId: number) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}` });
+      return this.http.get<User>(`${this.apiUrl}?userId=${userId}`, { headers });
+    } else {
+      throw new Error('Token not found in localStorage');
+    }
+  }
+
+  updateUser(updatedUser: any): Observable<User> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}` });
+      return this.http.put<User>(this.apiUrl, updatedUser, { headers });
+    } else {
+      throw new Error('Token not found in localStorage');
+    }
+  }
 
   deleteUser(userId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/users/${userId}`);
