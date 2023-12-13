@@ -21,9 +21,11 @@
             <span [class.lastItem]="last">{{ permission }}{{ !last ? ', ' : '' }}</span>
           </span>
         </td>
-        <td><button class="btn btn-primary" (click)="editUser(user.userId)">Edit</button></td>      
         <td>
-          <button *ngIf="canDelete" class="btn btn-primary" (click)="deleteUser(user.userId)">Delete</button>
+          <button *ngIf="updatePermission()" class="btn btn-primary" (click)="editUser(user.userId)">Edit</button>
+        </td>      
+        <td>
+          <button *ngIf="deletePermission()" class="btn btn-primary" (click)="deleteUser(user.userId)">Delete</button>
         </td>              
       </tr>
     </tbody>

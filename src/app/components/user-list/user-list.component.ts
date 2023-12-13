@@ -12,23 +12,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
-  canDelete: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserService,
-    private window: Window) { }
-
-  refreshPage() {
-    this.window.location.reload();
-  }
+  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.canDelete$.subscribe((value) => {
-      this.canDelete = value;
-      console.log("triggered " + value);
-      this.refreshPage(); 
-      // this.loadUsers();
-    });
-    this.canDelete = this.userService.userHasPermissionToDeleteUsers();
     this.loadUsers();
   }
 
@@ -62,7 +49,19 @@ export class UserListComponent implements OnInit {
       );
   }
 
+  deletePermission(): boolean {
+    return this.userService.userHasPermissionToDeleteUsers();
+  }
+
+  updatePermission() : boolean {
+    return this.userService.userHasPermissionToUpdateUsers();
+  }
+
   editUser(userId: number): void {
+    if (!this.updatePermission()) {
+      alert("User has no permission to update users.");
+      return;
+    }
     this.router.navigate(['/edit-user', userId]);
   }
 
@@ -83,7 +82,7 @@ export class UserListComponent implements OnInit {
     }
     if (permissions & UserPermission.CAN_DELETE_USERS) {
       permissionTitles.push('DELETE');
-    }
+    } 
     return permissionTitles;
   }
 }

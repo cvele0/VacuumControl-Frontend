@@ -8,7 +8,6 @@ import { User, UserPermission } from '../model/model';
 })
 export class UserService {
   private currentUser: any = null;
-  private currentPermissions: number = 0;
 
   private apiUrl = 'http://localhost:8080/api/users';
 
@@ -50,15 +49,10 @@ export class UserService {
 
   setCurrentUser(email: any, permissions: number): void {
     this.currentUser = email;
-    this.currentPermissions = permissions;
     this.canCreate = ((permissions & UserPermission.CAN_CREATE_USERS) !== 0);
     this.canUpdate = ((permissions & UserPermission.CAN_UPDATE_USERS) !== 0);
     this.canRead = ((permissions & UserPermission.CAN_READ_USERS) !== 0);
     this.canDelete = ((permissions & UserPermission.CAN_DELETE_USERS) !== 0);
-  }
-
-  getCurrentPermissions(): number {
-    return this.currentPermissions;
   }
 
   /////////////////////////////// USER METHODS
@@ -114,18 +108,22 @@ export class UserService {
 
 
   userHasPermissionToReadUsers() : boolean {
-    return (this.currentPermissions & UserPermission.CAN_READ_USERS) !== 0;
+    // return (this.currentPermissions & UserPermission.CAN_READ_USERS) !== 0;
+    return this.canRead;
   }
 
   userHasPermissionToCreateUsers() : boolean {
-    return (this.currentPermissions & UserPermission.CAN_CREATE_USERS) !== 0;
+    // return (this.currentPermissions & UserPermission.CAN_CREATE_USERS) !== 0;
+    return this.canCreate;
   }
 
   userHasPermissionToUpdateUsers() : boolean {
-    return (this.currentPermissions & UserPermission.CAN_UPDATE_USERS) !== 0;
+    // return (this.currentPermissions & UserPermission.CAN_UPDATE_USERS) !== 0;
+    return this.canUpdate;
   }
 
   userHasPermissionToDeleteUsers() : boolean {
-    return (this.currentPermissions & UserPermission.CAN_DELETE_USERS) !== 0;
+    // return (this.currentPermissions & UserPermission.CAN_DELETE_USERS) !== 0;
+    return this.canDelete;
   }
 }
