@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User, UserPermission } from '../model/model';
 
@@ -14,9 +14,47 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  private canCreate = false;
+  private canRead = false;
+  private canUpdate = false;
+  private canDelete = false;
+
+  canCreate$ = new BehaviorSubject<boolean>(this.canCreate);
+  canRead$ = new BehaviorSubject<boolean>(this.canRead);
+  canUpdate$ = new BehaviorSubject<boolean>(this.canUpdate);
+  canDelete$ = new BehaviorSubject<boolean>(this.canDelete);
+
+  updatePermission(permission: string, value: boolean): void {
+    // console.log("pozvan sam " + this.canDelete + " " + value);
+    switch (permission) {
+      case 'canCreate':
+        this.canCreate = value;
+        this.canCreate$.next(this.canCreate);
+        break;
+      case 'canRead':
+        this.canRead = value;
+        this.canRead$.next(this.canRead);
+        break;
+      case 'canUpdate':
+        this.canUpdate = value;
+        this.canUpdate$.next(this.canUpdate);
+        break;
+      case 'canDelete':
+        this.canDelete = value;
+        this.canDelete$.next(this.canDelete);
+        break;
+      default:
+        break;
+    }
+  }
+
   setCurrentUser(email: any, permissions: number): void {
     this.currentUser = email;
     this.currentPermissions = permissions;
+    this.canCreate = ((permissions & UserPermission.CAN_CREATE_USERS) !== 0);
+    this.canUpdate = ((permissions & UserPermission.CAN_UPDATE_USERS) !== 0);
+    this.canRead = ((permissions & UserPermission.CAN_READ_USERS) !== 0);
+    this.canDelete = ((permissions & UserPermission.CAN_DELETE_USERS) !== 0);
   }
 
   getCurrentPermissions(): number {

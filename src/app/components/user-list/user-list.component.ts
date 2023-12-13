@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
@@ -12,10 +12,23 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
+  canDelete: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
+  constructor(private http: HttpClient, private router: Router, private userService: UserService,
+    private window: Window) { }
+
+  refreshPage() {
+    this.window.location.reload();
+  }
 
   ngOnInit(): void {
+    this.userService.canDelete$.subscribe((value) => {
+      this.canDelete = value;
+      console.log("triggered " + value);
+      this.refreshPage(); 
+      // this.loadUsers();
+    });
+    this.canDelete = this.userService.userHasPermissionToDeleteUsers();
     this.loadUsers();
   }
 
@@ -51,6 +64,10 @@ export class UserListComponent implements OnInit {
 
   editUser(userId: number): void {
     this.router.navigate(['/edit-user', userId]);
+  }
+
+  deleteUser(userid: number): void {
+
   }
 
   getUserPermissions(permissions: number): string[] {
