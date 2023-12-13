@@ -11,6 +11,10 @@ export class AppComponent {
 
   constructor(private userService: UserService) {}
 
+  createPermission(): boolean {
+    return this.userService.userHasPermissionToCreateUsers();
+  }
+
   getCurrentUser(): string {
     return this.userService.getCurrentEmail();
   }
