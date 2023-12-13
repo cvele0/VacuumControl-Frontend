@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { User, UserPermission } from 'src/app/model/model';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,17 +14,23 @@ import { UserService } from 'src/app/services/user.service';
 export class UserListComponent implements OnInit {
   users: User[] = [];
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserService) { }
-
+  constructor(private http: HttpClient, private router: Router, private userService: UserService,
+    private authService: AuthService) { }
+ 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers(): void {
+    if (this.userService.getCurrentEmail() === '') {
+      alert("User logged out");
+      this.router.navigate(['login-page']);
+    }
     this.userService.getUsers()
       .pipe(
         catchError((error) => {
           console.error('Error fetching users:', error);
+          this.router.navigate(['login-page']);
           return throwError('There was an error fetching users');
         })
       )
@@ -33,6 +40,7 @@ export class UserListComponent implements OnInit {
             this.users = data;
           } else {
             console.log('User does not have permission to view users');
+            this.router.navigate(['login-page']);
             throw new Error('Forbidden'); 
           }
         },
@@ -40,9 +48,11 @@ export class UserListComponent implements OnInit {
           if (error.message === 'Forbidden') {
             // Handle the 403 error here
             console.error('User does not have permission to view users');
+            this.router.navigate(['login-page']);
             // Return or handle the 403 error accordingly
           } else {
             console.error('Error fetching users:', error);
+            this.router.navigate(['login-page']);
             // Handle other errors as needed
           }
         }
@@ -65,8 +75,27 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['/edit-user', userId]);
   }
 
-  deleteUser(userid: number): void {
-
+  deleteUser(email: string, userId: number): void {
+    const confirmDelete = confirm(`Are you sure you want to delete the user with email ${email}?`);
+    if (confirmDelete) {
+      this.userService.deleteUser(userId).subscribe(
+        () => {
+          if (this.userService.getCurrentEmail() === email) {
+            console.log("brise se ulogovan");
+            this.userService.logoutCurrentUser();
+            this.authService.logout();
+            this.router.navigate(['login-page']);
+          } else {
+            console.log(`User with email ${email} deleted successfully.`);
+            this.router.navigate(['user-list']);
+          }
+        },
+        (error) => {
+          console.error('Error deleting user:', error);
+          this.router.navigate(['login-page']);
+        }
+      );
+    }
   }
 
   getUserPermissions(permissions: number): string[] {

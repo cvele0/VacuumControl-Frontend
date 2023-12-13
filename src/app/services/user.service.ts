@@ -7,7 +7,7 @@ import { User, UserPermission } from '../model/model';
   providedIn: 'root'
 })
 export class UserService {
-  private currentUser: any = null;
+  private currentUserEmail: string = '';
 
   private apiUrl = 'http://localhost:8080/api/users';
 
@@ -22,6 +22,15 @@ export class UserService {
   canRead$ = new BehaviorSubject<boolean>(this.canRead);
   canUpdate$ = new BehaviorSubject<boolean>(this.canUpdate);
   canDelete$ = new BehaviorSubject<boolean>(this.canDelete);
+
+  getCurrentEmail() : string {
+    return this.currentUserEmail;
+  }
+
+  logoutCurrentUser(): void {
+    this.currentUserEmail = '';
+    this.canCreate = this.canRead = this.canUpdate = this.canDelete = false;
+  }
 
   updatePermission(permission: string, value: boolean): void {
     // console.log("pozvan sam " + this.canDelete + " " + value);
@@ -47,8 +56,8 @@ export class UserService {
     }
   }
 
-  setCurrentUser(email: any, permissions: number): void {
-    this.currentUser = email;
+  setCurrentUser(email: string, permissions: number): void {
+    this.currentUserEmail = email;
     this.canCreate = ((permissions & UserPermission.CAN_CREATE_USERS) !== 0);
     this.canUpdate = ((permissions & UserPermission.CAN_UPDATE_USERS) !== 0);
     this.canRead = ((permissions & UserPermission.CAN_READ_USERS) !== 0);
@@ -101,7 +110,14 @@ export class UserService {
   }
 
   deleteUser(userId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/users/${userId}`);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}` });
+      return this.http.delete<any>(`${this.apiUrl}/${userId}`, { headers });
+    } else {
+      throw new Error('Token not found in localStorage');
+    }
   }
 
   ///////////////////////////// PERMISSION METHODS

@@ -25,7 +25,7 @@
           <button *ngIf="updatePermission()" class="btn btn-primary" (click)="editUser(user.userId)">Edit</button>
         </td>      
         <td>
-          <button *ngIf="deletePermission()" class="btn btn-primary" (click)="deleteUser(user.userId)">Delete</button>
+          <button *ngIf="deletePermission()" class="btn btn-primary" (click)="deleteUser(user.email, user.userId)">Delete</button>
         </td>              
       </tr>
     </tbody>

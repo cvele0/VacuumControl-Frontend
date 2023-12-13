@@ -41,12 +41,10 @@ export class CreateUserComponent implements OnInit {
     this.userService.createUser(u)
       .subscribe(
         (response) => {
-          // Handle successful creation
           console.log('User created:', response);
           this.router.navigate(["user-list"]);
         },
         (error) => {
-          // Handle errors
           console.error('Error creating user:', error);
         }
       );

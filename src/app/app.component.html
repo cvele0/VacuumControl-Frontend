@@ -9,6 +9,13 @@
         </div>
       </div>
     </div>
+    <ul class="navbar-nav ml-auto"> <!-- Use ml-auto to push the content to the right -->
+      <li class="nav-item">
+        <a class="nav-link active">
+         Current: {{ getCurrentUser().length !== 0 ? getCurrentUser() : 'N/A' }}
+        </a>
+      </li>
+    </ul>
   </nav>
 </header>
 

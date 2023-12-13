@@ -15,8 +15,6 @@ export class EditUserComponent {
   constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
 
   onSubmit(): void {
-    // Handle user update logic here
-    // Call service method to update user
     if (!this.user || !this.user.password || this.user.password.length === 0) {
       alert("Password is required.");
       return;
@@ -28,11 +26,9 @@ export class EditUserComponent {
 
     this.userService.updateUser(this.user).subscribe(
       (response: any) => {
-        // Handle successful update
         console.log('User updated:', response);
       },
       (error: any) => {
-        // Handle errors
         console.error('Error updating user:', error);
       }
     );
