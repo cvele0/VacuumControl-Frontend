@@ -10,6 +10,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { CreateUserComponent } from './components/create-user/create-user.component';
+import { CleanerSearchComponent } from './cleaner-search/cleaner-search.component';
+import { AddCleanerComponent } from './add-cleaner/add-cleaner.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
     LoginComponent,
     UserListComponent,
     EditUserComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    CleanerSearchComponent,
+    AddCleanerComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

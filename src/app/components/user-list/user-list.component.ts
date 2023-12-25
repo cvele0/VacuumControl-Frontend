@@ -100,6 +100,7 @@ export class UserListComponent implements OnInit {
 
   getUserPermissions(permissions: number): string[] {
     const permissionTitles: string[] = [];
+    // USER
     if (permissions & UserPermission.CAN_CREATE_USERS) {
       permissionTitles.push('CREATE');
     }
@@ -111,6 +112,25 @@ export class UserListComponent implements OnInit {
     }
     if (permissions & UserPermission.CAN_DELETE_USERS) {
       permissionTitles.push('DELETE');
+    } 
+    // VACUUM
+    if (permissions & UserPermission.CAN_SEARCH_VACUUM) {
+      permissionTitles.push('SEARCH VACUUM');
+    } 
+    if (permissions & UserPermission.CAN_START_VACUUM) {
+      permissionTitles.push('START VACUUM');
+    } 
+    if (permissions & UserPermission.CAN_STOP_VACUUM) {
+      permissionTitles.push('STOP VACUUM');
+    } 
+    if (permissions & UserPermission.CAN_DISCHARGE_VACUUM) {
+      permissionTitles.push('DISCHARGE VACUUM');
+    } 
+    if (permissions & UserPermission.CAN_ADD_VACUUM) {
+      permissionTitles.push('ADD VACUUM');
+    } 
+    if (permissions & UserPermission.CAN_REMOVE_VACUUMS) {
+      permissionTitles.push('REMOVE VACUUMS');
     } 
     return permissionTitles;
   }

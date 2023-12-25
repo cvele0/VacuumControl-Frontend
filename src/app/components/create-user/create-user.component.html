@@ -37,6 +37,30 @@
         <input class="form-check-input" type="checkbox" id="canDelete" name="canDelete" [(ngModel)]="newUser.canDelete">
         <label class="form-check-label" for="canDelete">Delete</label>
       </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canSearchVacuum" name="canSearchVacuum" [(ngModel)]="newUser.canSearchVacuum">
+        <label class="form-check-label" for="canSearchVacuum">Search vacuum</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canStartVacuum" name="canStartVacuum" [(ngModel)]="newUser.canStartVacuum">
+        <label class="form-check-label" for="canStartVacuum">Start vacuum</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canStopVacuum" name="canStopVacuum" [(ngModel)]="newUser.canStopVacuum">
+        <label class="form-check-label" for="canStopVacuum">Stop vacuum</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canDischargeVacuum" name="canDischargeVacuum" [(ngModel)]="newUser.canDischargeVacuum">
+        <label class="form-check-label" for="canDischargeVacuum">Discharge vacuum</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canAddVacuum" name="canAddVacuum" [(ngModel)]="newUser.canAddVacuum">
+        <label class="form-check-label" for="canAddVacuum">Add vacuum</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="canRemoveVacuums" name="canRemoveVacuums" [(ngModel)]="newUser.canRemoveVacuums">
+        <label class="form-check-label" for="canRemoveVacuums">Remove vacuums</label>
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Add User</button>

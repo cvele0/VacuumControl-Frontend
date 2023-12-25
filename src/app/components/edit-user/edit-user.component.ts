@@ -21,7 +21,7 @@ export class EditUserComponent {
     }
     this.setPermissionsBasedOnBoolean();
     this.user.hashedPassword = this.user.password;
-    this.userService.updatePermission('canDelete', this.user.canDelete);
+    // this.userService.updatePermission('canDelete', this.user.canDelete);
     // console.log("updating: " + this.user.userId + " " + this.user.hashedPassword + " " + this.user.email);
 
     this.userService.updateUser(this.user).subscribe(

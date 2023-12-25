@@ -19,12 +19,20 @@ export class CreateUserComponent implements OnInit {
     canRead: false,
     canUpdate: false,
     canDelete: false,
+
+    canSearchVacuum: false,
+    canStartVacuum: false,
+    canStopVacuum: false,
+    canDischargeVacuum: false,
+    canAddVacuum: false,
+    canRemoveVacuums: false
   };
   
   constructor(private userService: UserService, private router: Router, private http: HttpClient) {}
 
   createUser(): void {
     let permissions: number = 0;
+    //USER
     if (this.newUser.canRead) {
       permissions |= UserPermission.CAN_READ_USERS;
     }
@@ -36,6 +44,25 @@ export class CreateUserComponent implements OnInit {
     }
     if (this.newUser.canDelete) {
       permissions |= UserPermission.CAN_DELETE_USERS;
+    } 
+    // VACUUM
+    if (this.newUser.canSearchVacuum) {
+      permissions |= UserPermission.CAN_SEARCH_VACUUM;
+    }
+    if (this.newUser.canStartVacuum) {
+      permissions |= UserPermission.CAN_START_VACUUM;
+    }
+    if (this.newUser.canStopVacuum) {
+      permissions |= UserPermission.CAN_STOP_VACUUM;
+    }
+    if (this.newUser.canDischargeVacuum) {
+      permissions |= UserPermission.CAN_DISCHARGE_VACUUM;
+    }
+    if (this.newUser.canAddVacuum) {
+      permissions |= UserPermission.CAN_ADD_VACUUM;
+    }
+    if (this.newUser.canRemoveVacuums) {
+      permissions |= UserPermission.CAN_REMOVE_VACUUMS;
     }
     const u = new User(0, this.newUser.name, this.newUser.surname, this.newUser.password, this.newUser.email, permissions);
     this.userService.createUser(u)
