@@ -1,0 +1,13 @@
+<div>
+  <h2>Create Cleaner</h2>
+  <form (ngSubmit)="createCleaner()" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" id="name" name="name" class="form-control" [(ngModel)]="newCleaner.name" required>
+      <div class="invalid-feedback">
+        Please provide a name for the cleaner.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Cleaner</button>
+  </form>
+</div>
