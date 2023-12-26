@@ -1,1 +1,75 @@
-<p>cleaner-search works!</p>
+<div class="container mt-4">
+  <h2 style="margin-bottom: 50px;">Search Cleaners</h2>
+
+  <!-- Search Form for All Filters -->
+  <form (ngSubmit)="applyAllFilters()">
+    <!-- Search by Name -->
+    <div class="mb-3">
+      <h4>Search by Name</h4>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Enter name" [(ngModel)]="nameSearchValue" name="nameSearchValue">
+      </div>
+    </div>
+
+    <!-- Search by Status -->
+    <div class="mb-3">
+      <h4>Search by Status</h4>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Enter statuses (comma-separated)" [(ngModel)]="statusSearchValue" name="statusSearchValue">
+      </div>
+    </div>
+
+    <!-- Search by Date Range -->
+    <!-- <div class="mb-3">
+      <h4>Search by Date Range</h4>
+      <div class="row">
+        <div class="col-md-5">
+          <label for="dateFrom">From:</label>
+          <input type="date" class="form-control" [(ngModel)]="dateFromValue" name="dateFromValue">
+        </div>
+        <div class="col-md-5">
+          <label for="dateTo">To:</label>
+          <input type="date" class="form-control" [(ngModel)]="dateToValue" name="dateToValue">
+        </div>
+      </div>
+    </div> -->
+    <div class="mb-3">
+      <h4>Search by Date Range</h4>
+      <div class="row">
+        <div class="col-md-5">
+          <label for="dateFrom">From:</label>
+          <input type="date" class="form-control" [ngModel]="dateFromValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateFromValue = $event" name="dateFromValue">
+        </div>
+        <div class="col-md-5">
+          <label for="dateTo">To:</label>
+          <input type="date" class="form-control" [ngModel]="dateToValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateToValue = $event" name="dateToValue">
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </div>
+  </form>
+
+  <!-- Cleaners Table -->
+  <h2>All Cleaners</h2>
+  <button style="margin: 10px" (click)="listAllCleaners()" class="btn btn-primary">All Cleaners</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <!-- ... other table headers -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cleaner of allCleaners">
+        <td>{{ cleaner.name }}</td>
+        <td>{{ cleaner.status }}</td>
+        <!-- ... other table data -->
+      </tr>
+    </tbody>
+  </table>
+</div>

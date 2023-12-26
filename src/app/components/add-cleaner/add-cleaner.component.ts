@@ -24,7 +24,7 @@ export class AddCleanerComponent {
           this.router.navigate(['search-cleaner']);
         }
       },
-      (error) => {
+      (error: any) => {
         // Handle error, e.g., display an error message
         console.error('Error creating cleaner:', error);
         // Optionally, show an error message to the user
