@@ -15,7 +15,19 @@ export class AppComponent {
     return this.userService.userHasPermissionToCreateUsers();
   }
 
+  addVacuumPermission(): boolean {
+    return this.userService.userHasPermissionToAddVacuum();
+  }
+
+  searchVacuumPermission() : boolean {
+    return this.userService.userHasPermissionToSearchVacuum();
+  }
+
   getCurrentUser(): string {
     return this.userService.getCurrentEmail();
+  }
+
+  isLoggedIn(): boolean {
+    return (this.userService.getCurrentEmail() !== '');
   }
 }

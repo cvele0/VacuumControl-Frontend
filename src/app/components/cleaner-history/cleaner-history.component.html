@@ -1,1 +1,17 @@
-<p>cleaner-history works!</p>
+<h2>Error History</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Date Occurred</th>
+      <th>Description</th> <!-- Adding Description column -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let error of errorHistory">
+      <td>{{ error.operation }}</td>
+      <td>{{ error.date | date }}</td>
+      <td>{{ error.errorMessage }}</td> <!-- Adding Description data -->
+    </tr>
+  </tbody>
+</table>

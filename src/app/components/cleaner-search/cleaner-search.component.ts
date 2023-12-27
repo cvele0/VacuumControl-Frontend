@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ErrorMessage } from 'src/app/model/model';
 import { CleanerService } from 'src/app/services/cleaner-service.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-cleaner-search',
@@ -17,7 +19,7 @@ export class CleanerSearchComponent implements OnInit {
   // dateFromValueString: string = this.dateFromValue.toISOString();
   // dateToValueString: string = this.dateToValue.toISOString();
 
-  constructor(private cleanerService: CleanerService) {
+  constructor(private cleanerService: CleanerService, private userService: UserService) {
     this.setDateDefaults();
   }
 
@@ -32,6 +34,9 @@ export class CleanerSearchComponent implements OnInit {
       (data) => {
       this.allCleaners = data;
     }, (error) => {
+      let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
+      // console.log("radim " + error.name + " i " + error.message);
+      this.userService.createErrorMessage(errorMessage);
       console.error('Error loading cleaners:', error);
     });
   }
@@ -70,39 +75,43 @@ export class CleanerSearchComponent implements OnInit {
         this.allCleaners = data;
       }, (error: any) => {
         console.error('Error fetching cleaners by name:', error);
+        // console.log("greska " + JSON.stringify(error));
+        let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
+        console.log("evo ga " + errorMessage + " " + errorMessage.errorMessage + " iiii " + errorMessage.operation);
+        this.userService.createErrorMessage(errorMessage);
         // Handle error, show message, etc.
       });
   }
 
-  searchByName() {
-    if (this.nameSearchValue == '') return;
-    this.cleanerService.getCleanersByNameContainingIgnoreCase(this.nameSearchValue)
-      .subscribe((data: any[]) => {
-        this.allCleaners = data;
-      }, error => {
-        console.error('Error fetching cleaners by name:', error);
-        // Handle error, show message, etc.
-      });
-  }
+  // searchByName() {
+  //   if (this.nameSearchValue == '') return;
+  //   this.cleanerService.getCleanersByNameContainingIgnoreCase(this.nameSearchValue)
+  //     .subscribe((data: any[]) => {
+  //       this.allCleaners = data;
+  //     }, error => {
+  //       console.error('Error fetching cleaners by name:', error);
+  //       // Handle error, show message, etc.
+  //     });
+  // }
 
-  searchByStatus() {
-    let statuses: string[] = this.statusSearchValue.split(',');
-    this.cleanerService.getCleanersByStatusIn(statuses)
-      .subscribe((data: any[]) => {
-        this.allCleaners = data;
-      }, error => {
-        console.error('Error fetching cleaners by status:', error);
-        // Handle error, show message, etc.
-      });
-  }
+  // searchByStatus() {
+  //   let statuses: string[] = this.statusSearchValue.split(',');
+  //   this.cleanerService.getCleanersByStatusIn(statuses)
+  //     .subscribe((data: any[]) => {
+  //       this.allCleaners = data;
+  //     }, error => {
+  //       console.error('Error fetching cleaners by status:', error);
+  //       // Handle error, show message, etc.
+  //     });
+  // }
 
-  searchByDateRange() {
-    this.cleanerService.getCleanersByDateRange(this.dateFromValue, this.dateToValue)
-      .subscribe((data: any[]) => {
-        this.allCleaners = data;
-      }, error => {
-        console.error('Error fetching cleaners by date range:', error);
-        // Handle error, show message, etc.
-      });
-  }
+  // searchByDateRange() {
+  //   this.cleanerService.getCleanersByDateRange(this.dateFromValue, this.dateToValue)
+  //     .subscribe((data: any[]) => {
+  //       this.allCleaners = data;
+  //     }, error => {
+  //       console.error('Error fetching cleaners by date range:', error);
+  //       // Handle error, show message, etc.
+  //     });
+  // }
 }

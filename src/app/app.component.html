@@ -5,6 +5,9 @@
         <div class="navbar-nav">
           <a [routerLink]="'/user-list'" class="nav-link active mr-2" aria-current="page">Users</a>
           <a *ngIf="createPermission()" [routerLink]="'/user-create'" class="nav-link active mr-2" aria-current="page">Create User</a>
+          <a *ngIf="addVacuumPermission()" [routerLink]="'/add-cleaner'" class="nav-link active mr-2" aria-current="page">Add Vacuum</a>
+          <a *ngIf="searchVacuumPermission()" [routerLink]="'/search-cleaner'" class="nav-link active mr-2" aria-current="page">Vacuums</a>
+          <a *ngIf="isLoggedIn()" [routerLink]="'/history-cleaner'" class="nav-link active mr-2" aria-current="page">Error History</a>
           <a [routerLink]="'/login-page'" class="nav-link active" aria-current="page">Login</a>
         </div>
       </div>

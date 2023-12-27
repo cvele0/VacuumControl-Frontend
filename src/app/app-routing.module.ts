@@ -7,6 +7,11 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { CreateUserGuard } from './createUser.guard';
 import { ListUsersGuard } from './listUsers.guard';
+import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.component';
+import { AddCleanerGuard } from './add-cleaner.guard';
+import { CleanerSearchComponent } from './components/cleaner-search/cleaner-search.component';
+import { SearchCleanerGuard } from './search-cleaner.guard';
+import { CleanerHistoryComponent } from './components/cleaner-history/cleaner-history.component';
 
 const routes: Routes = [
   {
@@ -31,6 +36,24 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canDeactivate: [AuthGuard]
   },
+  { 
+    path: 'add-cleaner', 
+    component: AddCleanerComponent,
+    canActivate: [AddCleanerGuard],
+    canDeactivate: [AddCleanerGuard]
+  },
+  { 
+    path: 'search-cleaner', 
+    component: CleanerSearchComponent,
+    canActivate: [SearchCleanerGuard],
+    canDeactivate: [SearchCleanerGuard]
+  },
+  {
+    path: 'history-cleaner', 
+    component: CleanerHistoryComponent,
+    canActivate: [AuthGuard],
+    canDeactivate: [AuthGuard]
+  }
 ];
 
 @NgModule({

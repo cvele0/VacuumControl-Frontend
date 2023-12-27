@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -10,9 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { CreateUserComponent } from './components/create-user/create-user.component';
-import { CleanerSearchComponent } from './cleaner-search/cleaner-search.component';
-import { AddCleanerComponent } from './add-cleaner/add-cleaner.component';
-import { HistoryComponent } from './history/history.component';
+import { CleanerHistoryComponent } from './components/cleaner-history/cleaner-history.component';
+import { CleanerSearchComponent } from './components/cleaner-search/cleaner-search.component';
+import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,7 @@ import { HistoryComponent } from './history/history.component';
     CreateUserComponent,
     CleanerSearchComponent,
     AddCleanerComponent,
-    HistoryComponent
+    CleanerHistoryComponent
   ],
   imports: [
     BrowserModule,

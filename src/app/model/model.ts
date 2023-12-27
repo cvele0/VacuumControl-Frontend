@@ -23,6 +23,50 @@ export class User {
   }
 }
 
+export enum CleanerStatus {
+  ON = 'ON',
+  OFF = 'OFF',
+  DISCHARGING = 'DISCHARGING'
+}
+
+export class Cleaner {
+  cleanerId: number;
+  name: string;
+  status: CleanerStatus = CleanerStatus.OFF;
+  dateCreated: string; // Use string or Date as per your requirements for handling LocalDate
+  user: User | null;
+  active: boolean = true;
+
+  constructor(cleanerId: number, name: string, dateCreated: string, user: User | null) {
+    this.cleanerId = cleanerId;
+    this.name = name;
+    this.dateCreated = dateCreated;
+    this.user = user;
+  }
+}
+
+export class ErrorMessage {
+  errorMessageId: number;
+  user: User | null;
+  date: Date | null;
+  operation: string;
+  errorMessage: string;
+
+  constructor(
+    errorMessageId: number,
+    user: User | null,
+    date: Date | null,
+    operation: string,
+    errorMessage: string
+  ) {
+    this.errorMessageId = errorMessageId;
+    this.user = user;
+    this.date = date;
+    this.operation = operation;
+    this.errorMessage = errorMessage;
+  }
+}
+
 export const UserPermission = {
   CAN_CREATE_USERS: 1,
   CAN_READ_USERS: 2,
