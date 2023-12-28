@@ -25,6 +25,7 @@ export class UserListComponent implements OnInit {
     if (this.userService.getCurrentEmail() === '') {
       alert("User logged out");
       this.router.navigate(['login-page']);
+      return;
     }
     this.userService.getUsers()
       .pipe(

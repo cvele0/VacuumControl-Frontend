@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CleanerSearchComponent implements OnInit {
   allCleaners: any[] = [];
+  allCleanersCopy: any[] = [];
 
   nameSearchValue: string = '';
   statusSearchValue: string = '';
@@ -33,6 +34,7 @@ export class CleanerSearchComponent implements OnInit {
     this.cleanerService.getCleaners().subscribe(
       (data) => {
       this.allCleaners = data;
+      this.allCleanersCopy = [...this.allCleaners]; // deep copy
     }, (error) => {
       let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
       // console.log("radim " + error.name + " i " + error.message);
@@ -41,12 +43,34 @@ export class CleanerSearchComponent implements OnInit {
     });
   }
 
+  canRemoveCleaners() : boolean {
+    return this.userService.userHasPermissionToRemoveVacuums();
+  }
+
+  eraseCleaner(name: string, cleanerId: number) {
+    const confirmDelete = confirm(`Are you sure you want to delete the cleaner with name ${name}?`);
+    if (confirmDelete) {
+      this.cleanerService.deleteCleaner(cleanerId).subscribe(
+        () => {
+          console.log(`Cleaner with name ${name} deleted successfully.`);
+          // console.log('Cleaner ID:', cleanerId);
+          // console.log('Before filtering:', this.allCleaners);
+          this.allCleaners = this.allCleaners.filter(cleaner => cleaner.cleanerId !== cleanerId);
+          // this.allCleaners = [...this.allCleaners]; // Try forcing an update
+        },
+        (error) => {
+          console.error('Error deleting cleaner:', error);
+        }
+      );
+    }
+  }
+
   ngOnInit(): void {
     this.loadCleaners();
   }
 
   listAllCleaners() : void {
-    this.loadCleaners();
+    this.allCleaners = [...this.allCleanersCopy]; 
   }
 
   formatDateForBackend(date: Date | string | null | undefined): string {
