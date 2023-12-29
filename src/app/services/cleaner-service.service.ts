@@ -139,7 +139,7 @@ export class CleanerService {
     if (token) {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json',
                                         'Authorization': `Bearer ${token}` });
-      const params = { cleanerId: cleanerId.toString(), userEmail };
+      const params = { cleanerId: cleanerId, userEmail };
       return this.http.get<string>(`${this.apiUrl}/start`, { headers, params });
     } else {
       throw new Error('Token not found in localStorage');

@@ -1,3 +1,18 @@
 h2:contains("Search Cleaners") {
   margin-bottom: 20px; /* Adjust the value as needed */
 }
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid;
+  /* Default styling for inactive (false) */
+  background-color: red;
+}
+
+.circle.active {
+  /* Styling for active (true) */
+  background-color: green;
+}

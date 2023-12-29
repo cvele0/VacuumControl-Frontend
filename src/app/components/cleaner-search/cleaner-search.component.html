@@ -46,6 +46,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Active </th>
         <th>Status</th>
         <th>Action</th>
       </tr>
@@ -53,17 +54,24 @@
     <tbody>
       <tr *ngFor="let cleaner of allCleaners">
         <td>{{ cleaner.name }}</td>
+        <td>
+          <div class="circle" [class.active]="cleaner.active"></div>
+        </td>
         <td>{{ cleaner.status }}</td>
         <td>
-          <!-- *ngIf="canRemoveCleaners()" -->
-          <button style="margin-right: 20px;" class="btn btn-danger" (click)="eraseCleaner(cleaner.name, cleaner.cleanerId)">Erase</button>
-  
+          <!-- ... -->
           <!-- Control buttons based on cleaner status -->
-          <button style="margin-right: 20px;" [ngClass]="{ 'btn btn-success': cleaner.status === 'Active', 'btn btn-outline-success': cleaner.status !== 'Active' }">START</button>
-          <button style="margin-right: 20px;" [ngClass]="{ 'btn btn-warning': cleaner.status === 'Active', 'btn btn-outline-warning': cleaner.status !== 'Active' }">DISCHARGE</button>
-          <button style="margin-right: 20px;" [ngClass]="{ 'btn btn-danger': cleaner.status === 'Active', 'btn btn-outline-danger': cleaner.status !== 'Active' }">OFF</button>
+          <button style="margin-right: 20px;" class="btn btn-primary" (click)="eraseCleaner(cleaner.name, cleaner.cleanerId)">Erase</button>
+
+          <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.ON" class="btn btn-success" (click)="startCleaner(cleaner.cleanerId)">START</button>
+          <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.ON" class="btn btn-outline-success" (click)="startCleaner(cleaner.cleanerId)">START</button>
+        
+          <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.DISCHARGING" class="btn btn-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
+          <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.DISCHARGING" class="btn btn-outline-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
+        
+          <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.OFF" class="btn btn-danger" (click)="stopCleaner(cleaner.cleanerId)">OFF</button>
+          <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.OFF" class="btn btn-outline-danger"(click)="stopCleaner(cleaner.cleanerId)">OFF</button>
         </td>
-      </tr>
     </tbody>
   </table>  
 </div>

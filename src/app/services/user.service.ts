@@ -151,6 +151,8 @@ export class UserService {
     if (token) {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json',
                                         'Authorization': `Bearer ${token}` });
+      console.log("Usao pravim error message: " + JSON.stringify(errorMessage) + " iiii " +
+      this.errorApiUrl);
       return this.http.post<ErrorMessage>(this.errorApiUrl, errorMessage, { headers });
     } else {
       throw new Error('Token not found in localStorage');

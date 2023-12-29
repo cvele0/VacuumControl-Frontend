@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ErrorMessage } from 'src/app/model/model';
+import { CleanerStatus, ErrorMessage } from 'src/app/model/model';
 import { CleanerService } from 'src/app/services/cleaner-service.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,6 +16,8 @@ export class CleanerSearchComponent implements OnInit {
   statusSearchValue: string = '';
   dateFromValue: Date = new Date();
   dateToValue: Date = new Date();
+
+  cleanerStatus = CleanerStatus;
 
   // dateFromValueString: string = this.dateFromValue.toISOString();
   // dateToValueString: string = this.dateToValue.toISOString();
@@ -47,26 +49,139 @@ export class CleanerSearchComponent implements OnInit {
     return this.userService.userHasPermissionToRemoveVacuums();
   }
 
+  startCleaner(cleanerId: number) {
+    const email = this.userService.getCurrentEmail();
+    this.cleanerService.startCleaner(cleanerId, email).subscribe(
+        () => {
+            console.log(`Cleaner with name ${name} started successfully.`);
+        },
+        (error) => {
+          console.error('Error starting cleaner:', JSON.stringify(error));
+          // console.log("evo teksta :::: " + error.error.text);
+          if (error && error.error && error.error.text) {
+            const text: string = error.error.text.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "START", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          } else if (error && error.error) {
+            const text: string = error.error.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "START", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          }
+        }
+      );
+  }
+
+  stopCleaner(cleanerId: number) {
+    const email = this.userService.getCurrentEmail();
+    this.cleanerService.stopCleaner(cleanerId, email).subscribe(
+      () => {
+            console.log(`Cleaner with name ${name} stopped successfully.`);
+        },
+        (error) => {
+          console.error('Error stopping cleaner:', JSON.stringify(error));
+          if (error && error.error && error.error.text) {
+            const text: string = error.error.text.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "STOP", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          } else if (error && error.error) {
+            const text: string = error.error.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "STOP", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          }
+        }
+      );
+  }
+
+  dischargeCleaner(cleanerId: number) {
+    const email = this.userService.getCurrentEmail();
+    this.cleanerService.dischargeCleaner(cleanerId, email).subscribe(
+      () => {
+            console.log(`Cleaner with name ${name} discharged successfully.`);
+        },
+        (error) => {
+          console.error('Error discharging cleaner:', JSON.stringify(error));
+          if (error && error.error && error.error.text) {
+            const text: string = error.error.text.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "DISCHARGE", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          } else if (error && error.error) {
+            const text: string = error.error.toLowerCase();
+            let errorMessage = new ErrorMessage(0, null, null, "DISCHARGE", text);
+            this.userService.createErrorMessage(errorMessage).subscribe(
+              () => {
+                
+              },
+              (error) => {
+                console.log("Error while creating a message: ", error);
+              }
+            )
+          }
+        }
+      );
+  }
+  
   eraseCleaner(name: string, cleanerId: number) {
     const confirmDelete = confirm(`Are you sure you want to delete the cleaner with name ${name}?`);
     if (confirmDelete) {
       this.cleanerService.deleteCleaner(cleanerId).subscribe(
         () => {
-          console.log(`Cleaner with name ${name} deleted successfully.`);
-          // console.log('Cleaner ID:', cleanerId);
-          // console.log('Before filtering:', this.allCleaners);
-          this.allCleaners = this.allCleaners.filter(cleaner => cleaner.cleanerId !== cleanerId);
-          // this.allCleaners = [...this.allCleaners]; // Try forcing an update
-        },
-        (error) => {
-          console.error('Error deleting cleaner:', error);
-        }
-      );
+              console.log(`Cleaner with name ${name} deleted successfully.`);
+              const deletedCleanerIndex = this.allCleaners.findIndex(cleaner => cleaner.id === cleanerId);
+              if (deletedCleanerIndex !== -1) {
+                  this.allCleaners[deletedCleanerIndex].active = false;
+              }
+          },
+          (error) => {
+            let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
+            // console.log("Usao ::: " + error.name + " iii " + error.message);
+            this.userService.createErrorMessage(errorMessage);
+            console.error('Error deleting cleaner:', error);
+          }
+        );
     }
   }
 
   ngOnInit(): void {
     this.loadCleaners();
+      // Polling every 5 seconds (adjust interval as needed)
+    setInterval(() => {
+      this.loadCleaners();
+    }, 5000); // 5000 milliseconds = 5 seconds
   }
 
   listAllCleaners() : void {
