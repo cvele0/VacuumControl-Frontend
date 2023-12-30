@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CleanerStatus, ErrorMessage } from 'src/app/model/model';
 import { CleanerService } from 'src/app/services/cleaner-service.service';
 import { UserService } from 'src/app/services/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NumberInputDialogComponent } from '../number-input-dialog/number-input-dialog.component';
 
 @Component({
   selector: 'app-cleaner-search',
@@ -22,7 +24,8 @@ export class CleanerSearchComponent implements OnInit {
   // dateFromValueString: string = this.dateFromValue.toISOString();
   // dateToValueString: string = this.dateToValue.toISOString();
 
-  constructor(private cleanerService: CleanerService, private userService: UserService) {
+  constructor(private cleanerService: CleanerService, private userService: UserService,
+     private dialog: MatDialog) {
     this.setDateDefaults();
   }
 
@@ -49,9 +52,21 @@ export class CleanerSearchComponent implements OnInit {
     return this.userService.userHasPermissionToRemoveVacuums();
   }
 
-  startCleaner(cleanerId: number) {
-    const email = this.userService.getCurrentEmail();
-    this.cleanerService.startCleaner(cleanerId, email).subscribe(
+  openNumberInputDialog(cleanerId: number) {
+    const dialogRef = this.dialog.open(NumberInputDialogComponent);
+
+    dialogRef.componentInstance.numberEntered.subscribe((enteredNumber: number) => {
+      this.startCleaner(cleanerId, enteredNumber);
+    });
+  }
+
+  startCleaner(cleanerId: number, enteredNumber: number) {
+    const email: string = this.userService.getCurrentEmail();
+    if (email === '') {
+      console.log("User not logged in.");
+      return;
+    }
+    this.cleanerService.startCleaner(cleanerId, enteredNumber, email).subscribe(
         () => {
             console.log(`Cleaner with name ${name} started successfully.`);
         },

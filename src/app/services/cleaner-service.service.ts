@@ -134,12 +134,12 @@ export class CleanerService {
     }
   }
 
-  startCleaner(cleanerId: number, userEmail: string): Observable<string> {
+  startCleaner(cleanerId: number, enteredNumber: number, email: string): Observable<string> {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json',
                                         'Authorization': `Bearer ${token}` });
-      const params = { cleanerId: cleanerId, userEmail };
+      const params = { cleanerId: cleanerId, enteredNumber: enteredNumber, email: email };
       return this.http.get<string>(`${this.apiUrl}/start`, { headers, params });
     } else {
       throw new Error('Token not found in localStorage');

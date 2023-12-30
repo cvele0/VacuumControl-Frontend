@@ -12,6 +12,8 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { CleanerHistoryComponent } from './components/cleaner-history/cleaner-history.component';
 import { CleanerSearchComponent } from './components/cleaner-search/cleaner-search.component';
 import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.component';
+import { NumberInputDialogComponent } from './components/number-input-dialog/number-input-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.compon
     CreateUserComponent,
     CleanerSearchComponent,
     AddCleanerComponent,
-    CleanerHistoryComponent
+    CleanerHistoryComponent,
+    NumberInputDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -30,8 +33,12 @@ import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.compon
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    MatDialog
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

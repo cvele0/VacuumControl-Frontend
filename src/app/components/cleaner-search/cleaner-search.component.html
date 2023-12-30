@@ -63,8 +63,8 @@
           <!-- Control buttons based on cleaner status -->
           <button style="margin-right: 20px;" class="btn btn-primary" (click)="eraseCleaner(cleaner.name, cleaner.cleanerId)">Erase</button>
 
-          <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.ON" class="btn btn-success" (click)="startCleaner(cleaner.cleanerId)">START</button>
-          <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.ON" class="btn btn-outline-success" (click)="startCleaner(cleaner.cleanerId)">START</button>
+          <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.ON" class="btn btn-success" (click)="openNumberInputDialog(cleaner.cleanerId)">START</button>
+          <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.ON" class="btn btn-outline-success" (click)="openNumberInputDialog(cleaner.cleanerId)">START</button>
         
           <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.DISCHARGING" class="btn btn-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
           <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.DISCHARGING" class="btn btn-outline-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
