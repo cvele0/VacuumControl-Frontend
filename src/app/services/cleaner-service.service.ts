@@ -11,11 +11,15 @@ export class CleanerService {
 
   constructor(private http: HttpClient) { }
 
-  getCleaners(): Observable<Cleaner[]> {
+  getCleaners(startIndex: number, endIndex: number): Observable<Cleaner[]> {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-      return this.http.get<Cleaner[]>(`${this.apiUrl}/all`, { headers });
+      const params = {
+        startIndex: startIndex,
+        endIndex: endIndex
+      };
+      return this.http.get<Cleaner[]>(`${this.apiUrl}/all`, { headers, params });
     } else {
       throw new Error('Token not found in localStorage');
     }

@@ -13,6 +13,8 @@ import { NumberInputDialogComponent } from '../number-input-dialog/number-input-
 export class CleanerSearchComponent implements OnInit {
   allCleaners: any[] = [];
   allCleanersCopy: any[] = [];
+  pageSize: number = 10;
+  currentPage: number = 1;
 
   nameSearchValue: string = '';
   statusSearchValue: string = '';
@@ -30,11 +32,26 @@ export class CleanerSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCleaners();
-      // Polling every 3 seconds (adjust interval as needed)
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.loadCleaners(startIndex, endIndex);
+      // Polling every 2 second (adjust interval as needed)
     setInterval(() => {
-      this.loadCleaners();
-    }, 3000); 
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      this.loadCleaners(startIndex, endIndex);
+    }, 2000); 
+  }
+
+  updatePagedCleaners() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.loadCleaners(startIndex, endIndex);
+  }
+
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
+    this.updatePagedCleaners();
   }
 
   listAllCleaners() : void {
@@ -47,11 +64,12 @@ export class CleanerSearchComponent implements OnInit {
     this.dateToValue = today;
   }
 
-  loadCleaners(): void {
-    this.cleanerService.getCleaners().subscribe(
+  loadCleaners(startIndex: number, endIndex: number): void {
+    this.cleanerService.getCleaners(startIndex, endIndex).subscribe(
       (data) => {
       this.allCleaners = data;
       this.allCleanersCopy = [...this.allCleaners]; // deep copy
+      this.updatePagedCleaners();
     }, (error) => {
       let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
       // console.log("radim " + error.name + " i " + error.message);
@@ -83,7 +101,9 @@ export class CleanerSearchComponent implements OnInit {
             console.log(`Cleaner with name ${name} started successfully.`);
         },
         (error) => {
-          console.error('Error starting cleaner:', JSON.stringify(error));
+          // LEAVE IF WANT
+          // console.error('Error starting cleaner:', JSON.stringify(error));
+
           // console.log("evo teksta :::: " + error.error.text);
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
@@ -119,7 +139,7 @@ export class CleanerSearchComponent implements OnInit {
             console.log(`Cleaner with name ${name} stopped successfully.`);
         },
         (error) => {
-          console.error('Error stopping cleaner:', JSON.stringify(error));
+          // console.error('Error stopping cleaner:', JSON.stringify(error));
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
             let errorMessage = new ErrorMessage(0, null, null, "STOP", text);
@@ -154,7 +174,7 @@ export class CleanerSearchComponent implements OnInit {
             console.log(`Cleaner with name ${name} discharged successfully.`);
         },
         (error) => {
-          console.error('Error discharging cleaner:', JSON.stringify(error));
+          // console.error('Error discharging cleaner:', JSON.stringify(error));
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
             let errorMessage = new ErrorMessage(0, null, null, "DISCHARGE", text);
