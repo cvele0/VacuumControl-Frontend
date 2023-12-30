@@ -29,6 +29,18 @@ export class CleanerSearchComponent implements OnInit {
     this.setDateDefaults();
   }
 
+  ngOnInit(): void {
+    this.loadCleaners();
+      // Polling every 3 seconds (adjust interval as needed)
+    setInterval(() => {
+      this.loadCleaners();
+    }, 3000); 
+  }
+
+  listAllCleaners() : void {
+    this.allCleaners = [...this.allCleanersCopy]; 
+  }
+
   setDateDefaults() {
     const today = new Date();
     this.dateFromValue = today;
@@ -189,18 +201,6 @@ export class CleanerSearchComponent implements OnInit {
           }
         );
     }
-  }
-
-  ngOnInit(): void {
-    this.loadCleaners();
-      // Polling every 5 seconds (adjust interval as needed)
-    setInterval(() => {
-      this.loadCleaners();
-    }, 5000); // 5000 milliseconds = 5 seconds
-  }
-
-  listAllCleaners() : void {
-    this.allCleaners = [...this.allCleanersCopy]; 
   }
 
   formatDateForBackend(date: Date | string | null | undefined): string {
