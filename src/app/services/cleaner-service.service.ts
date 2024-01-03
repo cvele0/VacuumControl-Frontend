@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Cleaner } from '../model/model';
+import { Cleaner, SchedulingRequest } from '../model/model';
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +133,17 @@ export class CleanerService {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json',
                                         'Authorization': `Bearer ${token}` });
       return this.http.delete<any>(`${this.apiUrl}/${cleanerId}`, { headers });
+    } else {
+      throw new Error('Token not found in localStorage');
+    }
+  }
+
+  scheduleCleaner(schedulingRequest: SchedulingRequest): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}` });
+      return this.http.post<any>(`${this.apiUrl}/schedule`, schedulingRequest, { headers });
     } else {
       throw new Error('Token not found in localStorage');
     }

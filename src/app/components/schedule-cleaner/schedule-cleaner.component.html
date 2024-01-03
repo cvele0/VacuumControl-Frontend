@@ -1,0 +1,33 @@
+<!-- Button to trigger modal -->
+<!-- <button type="button" class="btn btn-primary" (click)="openModal()">Schedule</button> -->
+
+<!-- Bootstrap modal -->
+<div class="modal fade" id="scheduleCleanerModal" tabindex="-1" role="dialog" aria-labelledby="scheduleCleanerModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="scheduleCleanerModalLabel">Schedule Cleaner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content: Input fields -->
+        <div class="form-group">
+          <label for="cron">Cron</label>
+          <input type="text" class="form-control" id="cron" [(ngModel)]="schedulingRequest.cron">
+        </div>
+        <div class="form-group">
+          <label for="operation">Operation</label>
+          <input type="text" class="form-control" id="operation" [(ngModel)]="schedulingRequest.operation">
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration</label>
+          <input type="number" class="form-control" id="duration" [(ngModel)]="schedulingRequest.duration">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary" (click)="scheduleCleaner()">Schedule</button>
+      </div>      
+    </div>
+  </div>
+</div>

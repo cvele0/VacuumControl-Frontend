@@ -14,6 +14,7 @@ import { CleanerSearchComponent } from './components/cleaner-search/cleaner-sear
 import { AddCleanerComponent } from './components/add-cleaner/add-cleaner.component';
 import { NumberInputDialogComponent } from './components/number-input-dialog/number-input-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ScheduleCleanerComponent } from './components/schedule-cleaner/schedule-cleaner.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     CleanerSearchComponent,
     AddCleanerComponent,
     CleanerHistoryComponent,
-    NumberInputDialogComponent
+    NumberInputDialogComponent,
+    ScheduleCleanerComponent
   ],
   imports: [
     BrowserModule,

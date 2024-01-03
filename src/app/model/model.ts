@@ -86,6 +86,25 @@ export class ErrorMessageDTO {
   }
 }
 
+export class SchedulingRequest {
+  cron: string;
+  cleanerId: number;
+  operation: string;
+  duration: number;
+
+  constructor(
+    cron: string,
+    cleanerId: number,
+    operation: string,
+    duration: number
+  ) {
+    this.cron = cron;
+    this.cleanerId = cleanerId;
+    this.operation = operation;
+    this.duration = duration;
+  }
+}
+
 export const UserPermission = {
   CAN_CREATE_USERS: 1,
   CAN_READ_USERS: 2,

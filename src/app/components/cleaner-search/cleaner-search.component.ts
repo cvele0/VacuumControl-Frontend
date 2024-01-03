@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CleanerStatus, ErrorMessage, ErrorMessageDTO } from 'src/app/model/model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CleanerStatus, ErrorMessage, ErrorMessageDTO, SchedulingRequest } from 'src/app/model/model';
 import { CleanerService } from 'src/app/services/cleaner-service.service';
 import { UserService } from 'src/app/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NumberInputDialogComponent } from '../number-input-dialog/number-input-dialog.component';
+import { ScheduleCleanerComponent } from '../schedule-cleaner/schedule-cleaner.component';
 
 @Component({
   selector: 'app-cleaner-search',
@@ -23,6 +24,8 @@ export class CleanerSearchComponent implements OnInit {
 
   cleanerStatus = CleanerStatus;
 
+  @ViewChild(ScheduleCleanerComponent) scheduleCleanerComponent!: ScheduleCleanerComponent;
+
   // dateFromValueString: string = this.dateFromValue.toISOString();
   // dateToValueString: string = this.dateToValue.toISOString();
 
@@ -31,22 +34,59 @@ export class CleanerSearchComponent implements OnInit {
     this.setDateDefaults();
   }
 
+  trackById(index: number, item: any): any {
+    return item.cleanerId; // assuming 'cleanerId' is a unique identifier for each cleaner
+  }
+
   ngOnInit(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.loadCleaners(startIndex, endIndex);
       // Polling every 2 second (adjust interval as needed)
-    setInterval(() => {
-      const startIndex = (this.currentPage - 1) * this.pageSize;
-      const endIndex = startIndex + this.pageSize;
-      this.loadCleaners(startIndex, endIndex);
-    }, 2000); 
+    // setInterval(() => {
+    //   const startIndex = (this.currentPage - 1) * this.pageSize;
+    //   const endIndex = startIndex + this.pageSize;
+    //   this.loadCleaners(startIndex, endIndex);
+    // }, 5000); 
   }
 
   updatePagedCleaners() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.loadCleaners(startIndex, endIndex);
+  }
+
+  handleScheduledEvent(eventData: any) {
+    // Handle the emitted event data here
+    console.log('Received scheduled event:', eventData);
+    // Perform actions wth the received data, such as triggering backend calls
+    this.callBackendWithScheduledData(eventData);
+  }
+
+  openModal(cleanerId: number) {
+    if (this.scheduleCleanerComponent) {
+      this.scheduleCleanerComponent.openModal(cleanerId);
+    } else {
+      console.error('Schedule Cleaner Component not found.');
+    }
+  }
+
+  callBackendWithScheduledData(data: any) {
+    // console.log("fetching " + JSON.stringify(data));
+    this.cleanerService.scheduleCleaner(data).subscribe(
+      (dataReceived) => {
+        console.log("schedule successful ");
+      }, (error) => {
+        // console.log("Schedule error ocurred", error);
+        if (error && error.error && error.error.text) {
+            console.log(error.error.text);
+          } else if (error && error.text) {
+            console.log(error.text);
+          } else {
+            console.log("error ocurred");
+          }
+      }
+    )
   }
 
   onPageChange(pageNumber: number) {

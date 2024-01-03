@@ -24,11 +24,11 @@
       <div class="row">
         <div class="col-md-5">
           <label for="dateFrom">From:</label>
-          <input type="date" class="form-control" [ngModel]="dateFromValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateFromValue = $event" name="dateFromValue">
+          <input type="date" class="form-control" id="dateFrom" [ngModel]="dateFromValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateFromValue = $event" name="dateFromValue">
         </div>
         <div class="col-md-5">
           <label for="dateTo">To:</label>
-          <input type="date" class="form-control" [ngModel]="dateToValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateToValue = $event" name="dateToValue">
+          <input type="date" class="form-control" id="dateTo" [ngModel]="dateToValue | date: 'yyyy-MM-dd'" (ngModelChange)="dateToValue = $event" name="dateToValue">
         </div>
       </div>
     </div>
@@ -49,10 +49,15 @@
         <th>Active </th>
         <th>Status</th>
         <th>Action</th>
+        <th>Start</th>
+        <th>Discharge</th>
+        <th>Stop</th>
+        <th>Schedule</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let cleaner of allCleaners">
+      <!-- ; trackBy: trackById -->
+      <tr *ngFor="let cleaner of allCleaners; trackBy: trackById">
         <td>{{ cleaner.name }}</td>
         <td>
           <div class="circle" [class.active]="cleaner.active"></div>
@@ -62,16 +67,26 @@
           <!-- ... -->
           <!-- Control buttons based on cleaner status -->
           <button style="margin-right: 20px;" class="btn btn-primary" (click)="eraseCleaner(cleaner.name, cleaner.cleanerId)">Erase</button>
-
+        </td>
+        <td>
           <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.ON" class="btn btn-success" (click)="openNumberInputDialog(cleaner.cleanerId)">START</button>
           <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.ON" class="btn btn-outline-success" (click)="openNumberInputDialog(cleaner.cleanerId)">START</button>
-        
+        </td>
+        <td>
           <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.DISCHARGING" class="btn btn-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
           <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.DISCHARGING" class="btn btn-outline-warning" (click)="dischargeCleaner(cleaner.cleanerId)">DISCHARGE</button>
-        
+        </td>
+        <td>
           <button style="margin-right: 20px;" *ngIf="cleaner.status === cleanerStatus.OFF" class="btn btn-danger" (click)="stopCleaner(cleaner.cleanerId)">OFF</button>
           <button style="margin-right: 20px;" *ngIf="cleaner.status !== cleanerStatus.OFF" class="btn btn-outline-danger"(click)="stopCleaner(cleaner.cleanerId)">OFF</button>
-        </td>
+        </td> 
+        <td style="width: 20%;">
+          <button type="button" class="btn btn-primary" (click)="openModal(cleaner.cleanerId)">Schedule</button>
+        </td>       
+        <app-schedule-cleaner 
+          (scheduleEvent)="handleScheduledEvent($event)">
+        </app-schedule-cleaner>
+        <!-- Trigger for modal -->
     </tbody>
   </table>  
   <!-- Add pagination controls -->
