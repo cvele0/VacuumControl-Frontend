@@ -48,6 +48,7 @@ export class Cleaner {
 export class ErrorMessage {
   errorMessageId: number;
   user: User | null;
+  cleaner: Cleaner | null;
   date: Date | null;
   operation: string;
   errorMessage: string;
@@ -55,15 +56,33 @@ export class ErrorMessage {
   constructor(
     errorMessageId: number,
     user: User | null,
+    cleaner: Cleaner | null,
     date: Date | null,
     operation: string,
     errorMessage: string
   ) {
     this.errorMessageId = errorMessageId;
     this.user = user;
+    this.cleaner = cleaner;
     this.date = date;
     this.operation = operation;
     this.errorMessage = errorMessage;
+  }
+}
+
+export class ErrorMessageDTO {
+  operation: string;
+  errorMessage: string;
+  cleanerId: number;
+
+  constructor(
+    operation: string,
+    errorMessage: string,
+    cleanerId: number
+  ) {
+    this.operation = operation;
+    this.errorMessage = errorMessage;
+    this.cleanerId = cleanerId;
   }
 }
 

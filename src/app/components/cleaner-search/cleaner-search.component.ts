@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CleanerStatus, ErrorMessage } from 'src/app/model/model';
+import { CleanerStatus, ErrorMessage, ErrorMessageDTO } from 'src/app/model/model';
 import { CleanerService } from 'src/app/services/cleaner-service.service';
 import { UserService } from 'src/app/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -71,9 +71,6 @@ export class CleanerSearchComponent implements OnInit {
       this.allCleanersCopy = [...this.allCleaners]; // deep copy
       this.updatePagedCleaners();
     }, (error) => {
-      let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
-      // console.log("radim " + error.name + " i " + error.message);
-      this.userService.createErrorMessage(errorMessage);
       console.error('Error loading cleaners:', error);
     });
   }
@@ -107,7 +104,7 @@ export class CleanerSearchComponent implements OnInit {
           // console.log("evo teksta :::: " + error.error.text);
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "START", text);
+            let errorMessage = new ErrorMessageDTO("START", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -118,7 +115,7 @@ export class CleanerSearchComponent implements OnInit {
             )
           } else if (error && error.error) {
             const text: string = error.error.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "START", text);
+            let errorMessage = new ErrorMessageDTO("START", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -142,7 +139,7 @@ export class CleanerSearchComponent implements OnInit {
           // console.error('Error stopping cleaner:', JSON.stringify(error));
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "STOP", text);
+            let errorMessage = new ErrorMessageDTO("STOP", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -153,7 +150,7 @@ export class CleanerSearchComponent implements OnInit {
             )
           } else if (error && error.error) {
             const text: string = error.error.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "STOP", text);
+            let errorMessage = new ErrorMessageDTO("STOP", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -177,7 +174,7 @@ export class CleanerSearchComponent implements OnInit {
           // console.error('Error discharging cleaner:', JSON.stringify(error));
           if (error && error.error && error.error.text) {
             const text: string = error.error.text.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "DISCHARGE", text);
+            let errorMessage = new ErrorMessageDTO("DISCHARGE", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -188,7 +185,7 @@ export class CleanerSearchComponent implements OnInit {
             )
           } else if (error && error.error) {
             const text: string = error.error.toLowerCase();
-            let errorMessage = new ErrorMessage(0, null, null, "DISCHARGE", text);
+            let errorMessage = new ErrorMessageDTO("DISCHARGE", text, cleanerId);
             this.userService.createErrorMessage(errorMessage).subscribe(
               () => {
                 
@@ -214,7 +211,7 @@ export class CleanerSearchComponent implements OnInit {
               }
           },
           (error) => {
-            let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
+            let errorMessage = new ErrorMessageDTO(error.name, error.message, cleanerId);
             // console.log("Usao ::: " + error.name + " iii " + error.message);
             this.userService.createErrorMessage(errorMessage);
             console.error('Error deleting cleaner:', error);
@@ -250,9 +247,6 @@ export class CleanerSearchComponent implements OnInit {
       }, (error: any) => {
         console.error('Error fetching cleaners by name:', error);
         // console.log("greska " + JSON.stringify(error));
-        let errorMessage = new ErrorMessage(0, null, null, error.name, error.message);
-        console.log("evo ga " + errorMessage + " " + errorMessage.errorMessage + " iiii " + errorMessage.operation);
-        this.userService.createErrorMessage(errorMessage);
         // Handle error, show message, etc.
       });
   }

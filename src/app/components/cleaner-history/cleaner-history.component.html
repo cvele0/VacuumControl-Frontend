@@ -3,6 +3,7 @@
   <thead>
     <tr>
       <th>Operation</th>
+      <th>Cleaner</th>
       <th>Date Occurred</th>
       <th>Description</th> <!-- Adding Description column -->
     </tr>
@@ -10,6 +11,7 @@
   <tbody>
     <tr *ngFor="let error of errorHistory">
       <td>{{ error.operation }}</td>
+      <td>{{ error.cleaner.name }}</td>
       <td>{{ error.date | date }}</td>
       <td>{{ error.errorMessage }}</td> <!-- Adding Description data -->
     </tr>

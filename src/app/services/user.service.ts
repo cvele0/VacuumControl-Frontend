@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ErrorMessage, User, UserPermission } from '../model/model';
+import { ErrorMessage, ErrorMessageDTO, User, UserPermission } from '../model/model';
 
 @Injectable({
   providedIn: 'root'
@@ -146,7 +146,7 @@ export class UserService {
     }
   }
 
-  createErrorMessage(errorMessage: ErrorMessage): Observable<ErrorMessage> {
+  createErrorMessage(errorMessage: ErrorMessageDTO): Observable<ErrorMessage> {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json',
